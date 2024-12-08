@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Калькулятор удвоения</title>
+  </head>
+  <body>
+    <script>
+      (function calculateProfit() {
+        let days = prompt('Введите количество дней, на которые производить расчет', 14);
+        let startAmount = prompt('Введите изначальную сумму в рублях', 5);
+        let amount = BigInt(startAmount);
+        for (let day = 1; day < days; day++) {
+          amount *= 2n;
+        }
+        alert(
+          `Удваивая Вашу изначальную сумму, ${startAmount} рублей, Вы будете иметь ${amount.toString()} рублей на ${days} день`
+        );
+      })();
+    </script>
+  </body>
+</html>
