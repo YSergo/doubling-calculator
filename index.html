@@ -9,18 +9,66 @@
 
 <body>
   <script>
-    (function calculate() {
-      let iterations = prompt('Введите количество итераций', 14);
-      let startValue = prompt('Введите начальное число', 5);
-      let result = BigInt(startValue);
+    (function run() {
+      const texts = {
+        ru: {
+          title: 'Последовательное умножение на 2',
+          chooseLang: 'Выберите язык: en / ru',
+          iterations: 'Введите количество итераций (целое число ≥ 1)',
+          startValue: 'Введите начальное число (целое число)',
+          invalidIterations: 'Некорректное количество итераций.',
+          invalidStartValue: 'Некорректное начальное число.',
+          result: (value, iterations, result) =>
+            `Результат последовательного умножения числа ${value} на 2 (${iterations} итераций): ${result}`
+        },
+        en: {
+          title: 'Repeated multiplication by 2',
+          chooseLang: 'Choose language: en / ru',
+          iterations: 'Enter number of iterations (integer ≥ 1)',
+          startValue: 'Enter initial number (integer)',
+          invalidIterations: 'Invalid number of iterations.',
+          invalidStartValue: 'Invalid initial number.',
+          result: (value, iterations, result) =>
+            `Result of multiplying ${value} by 2 (${iterations} iterations): ${result}`
+        }
+      };
 
-      for (let i = 1; i < iterations; i++) {
-        result *= 2n;
+      while (true) {
+        const rawLang = prompt('Choose language / Выберите язык: en / ru', 'en');
+        if (rawLang === null) break;
+
+        const language = rawLang.trim().toLowerCase();
+        const t = texts[language] || texts.en;
+
+        document.title = t.title;
+        document.documentElement.lang = (language === 'ru' ? 'ru' : 'en');
+
+        const iterationsInput = prompt(t.iterations, 14);
+        if (iterationsInput === null) continue;
+
+        const iterations = Number(iterationsInput);
+        if (!Number.isInteger(iterations) || iterations < 1) {
+          alert(t.invalidIterations);
+          continue;
+        }
+
+        const startValueInput = prompt(t.startValue, 5);
+        if (startValueInput === null) continue;
+
+        const startValueStr = startValueInput.trim();
+        if (!/^-?\d+$/.test(startValueStr)) {
+          alert(t.invalidStartValue);
+          continue;
+        }
+
+        const startValue = BigInt(startValueStr);
+
+        // Формула: startValue * 2^(iterations-1)
+        const multiplier = 2n ** BigInt(iterations - 1);
+        const result = startValue * multiplier;
+
+        alert(t.result(startValueStr, iterations, result.toString()));
       }
-
-      alert(
-        `Результат последовательного умножения числа ${startValue} на 2 (${iterations} итераций): ${result.toString()}`
-      );
     })();
   </script>
 </body>
