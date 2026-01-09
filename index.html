@@ -43,23 +43,41 @@
         document.title = t.title;
         document.documentElement.lang = (language === 'ru' ? 'ru' : 'en');
 
-        const iterationsInput = prompt(t.iterations, 14);
-        if (iterationsInput === null) continue;
+        let iterations = null;
 
-        const iterations = Number(iterationsInput);
-        if (!Number.isInteger(iterations) || iterations < 1) {
-          alert(t.invalidIterations);
-          continue;
+        while (true) {
+          const iterationsInput = prompt(t.iterations, 14);
+          if (iterationsInput === null) break;
+
+          const n = Number(iterationsInput);
+          if (!Number.isInteger(n) || n < 1) {
+            alert(t.invalidIterations);
+            continue;
+          }
+
+          iterations = n;
+          break;
         }
 
-        const startValueInput = prompt(t.startValue, 5);
-        if (startValueInput === null) continue;
+        if (iterations === null) continue;
 
-        const startValueStr = startValueInput.trim();
-        if (!/^-?\d+$/.test(startValueStr)) {
-          alert(t.invalidStartValue);
-          continue;
+        let startValueStr = null;
+
+        while (true) {
+          const startValueInput = prompt(t.startValue, 5);
+          if (startValueInput === null) break;
+
+          const s = startValueInput.trim();
+          if (!/^-?\d+$/.test(s)) {
+            alert(t.invalidStartValue);
+            continue;
+          }
+
+          startValueStr = s;
+          break;
         }
+
+        if (startValueStr === null) continue;
 
         const startValue = BigInt(startValueStr);
 
